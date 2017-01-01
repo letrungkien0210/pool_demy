@@ -44,6 +44,7 @@ app.use((req, res, next) => {
 require('./routes/main')(app);
 require('./routes/user')(app);
 require('./routes/teacher')(app);
+require('./routes/payment')(app);
 
 app.listen(secret.port, err => {
     if (err)

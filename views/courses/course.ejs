@@ -1,0 +1,22 @@
+<% layout('boilerplate') %>
+
+<div class="container">
+	<div id="wistia_<%= course.wistiaId %>" class="wistia_embed" style="width:1024px;height:579px;" data-video-width="1024" data-video-height="579">&nbsp;</div>
+	<script charset="ISO-8859-1" src="//fast.wistia.com/assets/external/playlist-v1.js"></script>
+	<script>
+	wistiaPlaylist = Wistia.playlist("<%= course.wistiaId %>", {
+	  version: "v1",
+	  theme: "tab",
+	  videoOptions: {
+	    volumeControl: true,
+	    autoPlay: true,
+	    videoWidth: "1024",
+	    videoHeight: "579"
+	  },
+	  media_0_0: {
+	    autoPlay: false,
+	    controlsVisibleOnLoad: false
+	  }
+	});
+	</script>
+</div>

@@ -1,4 +1,6 @@
 const Course = require('../models/course');
+const User = require('../models/user');
+const async = require('async');
 
 module.exports = function(app) {
     app.get('/', (req, res) => {
@@ -14,9 +16,11 @@ module.exports = function(app) {
     app.get('/courses/:id', (req, res) => {
         async.parallel([
             callback => {
-                Course.findOne({ _id: req.params.id }, (err, foundCourse) => {
-                    callback(err, foundCourse);
-                })
+                Course.findOne({ _id: req.params.id })
+                    .populate('ownByStudent.user')
+                    .exec((err, foundCourse) => {
+                        callback(err, foundCourse);
+                    });
             },
             callback => {
                 User.findOne({ _id: req.user._id, 'coursesTaken.course': req.params.id })
@@ -37,7 +41,7 @@ module.exports = function(app) {
             let userCourse = results[1];
             let teacherCourse = results[2];
             if (userCourse === null && teacherCourse === null) {
-                res.render('courses/sourceDesc', { course: course });
+                res.render('courses/courseDesc', { course: course });
             } else if (userCourse === null && teacherCourse != null) {
                 res.render('courses/course', { course: course });
             } else {
